@@ -26,16 +26,16 @@ fn img_to_ascii(path: &str, out: &mut String, width: u32, height: u32) {
         let resized = img.resize_exact(width, height, image::imageops::FilterType::Nearest);
         resized
             .grayscale()
-            .as_luma8()
-            .unwrap()
+            .into_luma8()
             .chunks(resized.width() as usize)
             .for_each(|l| {
                 out.extend(l.iter().map(|p| {
                     ASCII.as_bytes()[((*p as f32 / 256.0) * ASCII.len() as f32) as usize] as char
                 } ));
-                out.extend(['\n']);
+                out.extend(['\n'])
             });
-    } else {
+    } else if let Err(e) = image::open(path){
+        println!("{}", e);
         *out = "Incorect file provided".into();
     }
 }
