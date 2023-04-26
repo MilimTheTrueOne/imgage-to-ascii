@@ -1,6 +1,6 @@
 fn main() {
     let img = image::open("image.png").unwrap();
-    let resized = img.resize(40, 40, image::imageops::FilterType::Nearest);
+    let resized = img.resize_exact(60, 40, image::imageops::FilterType::Nearest);
     resized
         .grayscale()
         .as_luma8()
