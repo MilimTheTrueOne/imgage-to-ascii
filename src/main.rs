@@ -1,4 +1,7 @@
 use std::env;
+
+const ASCII: &str = " `.-':_,^=;><+!rc*/z?sLTv)J7(|Fi{C}fI31tlu[neoZ5Yxjya]2ESwqkP6h9d4VpOGbUAKXHm8RD#$Bg0MNWQ%&@";
+
 fn main() {
     let args: Vec<String> = env::args().collect();
     let mut out = String::new();
@@ -27,10 +30,9 @@ fn img_to_ascii(path: &str, out: &mut String, width: u32, height: u32) {
             .unwrap()
             .chunks(resized.width() as usize)
             .for_each(|l| {
-                out.extend(l.iter().map(|p| match *p {
-                    0..=100 => " ",
-                    101..=u8::MAX => "#",
-                }));
+                out.extend(l.iter().map(|p| {
+                    ASCII.as_bytes()[((*p as f32 / 256.0) * ASCII.len() as f32) as usize] as char
+                } ));
                 out.extend(['\n']);
             });
     } else {
